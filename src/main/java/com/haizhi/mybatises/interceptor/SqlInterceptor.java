@@ -1,5 +1,7 @@
 package com.haizhi.mybatises.interceptor;
 
+import com.google.common.collect.Lists;
+import com.haizhi.mybatises.entity.User;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.BoundSql;
@@ -26,11 +28,11 @@ import java.util.Properties;
 
 /**
  * 拼接sql，代入对应参数
+ * queryCursor 方法暂未拦截
  *
  * @date 2019/1/14 20:13
  */
 @Component
-//@Profile({"dev", "test"})
 @Intercepts({
         @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class}),
         @Signature(type = Executor.class, method = "query", args = {MappedStatement.class, Object.class, RowBounds.class, ResultHandler.class, CacheKey.class, BoundSql.class}),
@@ -46,25 +48,30 @@ public class SqlInterceptor implements Interceptor {
         try {
             MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
             Object parameter = null;
+            int argsLength = invocation.getArgs().length;
             if (invocation.getArgs().length > 1) {
                 parameter = invocation.getArgs()[1];
             }
-            String sqlId = mappedStatement.getId();
+            System.out.println(parameter.getClass().getName());
             BoundSql boundSql = mappedStatement.getBoundSql(parameter);
             Configuration configuration = mappedStatement.getConfiguration();
 
-            long startTime = System.currentTimeMillis();
+            if (invocation.getArgs().length > 2) {
+                RowBounds rowBounds = (RowBounds)invocation.getArgs()[2];
+            }
 
             try {
-                result = invocation.proceed();
-            } finally {
-                long endTime = System.currentTimeMillis();
-                long sqlCostTime = endTime - startTime;
-                String sql = this.getSql(configuration, boundSql);
-                this.formatSqlLog(sqlId, sql, sqlCostTime, result);
-            }
-            return result;
+//                result = invocation.proceed();
+                User user = new User();
+                user.setId(1);
+                user.setUserName("my---name");
+                result = Lists.newArrayList(user);
 
+            } finally {
+            }
+            String sql = getSql(configuration, boundSql);
+
+            return result;
         } catch (Exception e) {
             return result;
         }

@@ -12,6 +12,12 @@ public class UserServiceImpl implements UserService {
     UserMapper userMapper;
 
     public User Sel(int id){
-        return userMapper.Sel(id);
+        User sel = null;
+        try {
+             sel = userMapper.Sel(id);
+        }catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+        return sel;
     }
 }
