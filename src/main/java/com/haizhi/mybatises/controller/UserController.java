@@ -1,6 +1,6 @@
 package com.haizhi.mybatises.controller;
 
-import com.haizhi.mybatises.conf.MyBatisSqlBean;
+//import com.haizhi.mybatises.conf.MyBatisSqlBean;
 import com.haizhi.mybatises.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,8 +20,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private MyBatisSqlBean myBatisSqlBean;
+//    @Autowired
+//    private MyBatisSqlBean myBatisSqlBean;
 
     @GetMapping("getUser/{id}")
     @ApiOperation(value = "根据id进行查询")
@@ -36,11 +36,11 @@ public class UserController {
     @GetMapping("test")
     @ApiOperation(value = "根据id进行查询")
     public String test() {
-        try {
-            myBatisSqlBean.mybatisStep();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            myBatisSqlBean.mybatisStep();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         return "";
     }
 }

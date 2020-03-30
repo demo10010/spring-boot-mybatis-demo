@@ -2292,3 +2292,110 @@ java.lang.NullPointerException: null
 2020-03-30 23:38:00.207 [http-nio-9090-exec-1] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring DispatcherServlet 'dispatcherServlet'
 2020-03-30 23:38:00.207 [http-nio-9090-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
 2020-03-30 23:38:00.213 [http-nio-9090-exec-1] INFO  org.springframework.web.servlet.DispatcherServlet - Completed initialization in 6 ms
+2020-03-30 23:53:45.934 [main] INFO  com.haizhi.mybatises.MybatisEsApplication - Starting MybatisEsApplication on SC-202002152346 with PID 13004 (D:\code\spring-boot-mybatis-demo\target\classes started by Administrator in D:\code\spring-boot-mybatis-demo)
+2020-03-30 23:53:45.937 [main] INFO  com.haizhi.mybatises.MybatisEsApplication - No active profile set, falling back to default profiles: default
+2020-03-30 23:53:47.248 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9090 (http)
+2020-03-30 23:53:47.256 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9090"]
+2020-03-30 23:53:47.256 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2020-03-30 23:53:47.257 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.31]
+2020-03-30 23:53:47.335 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2020-03-30 23:53:47.335 [main] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1353 ms
+2020-03-30 23:53:47.381 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userController': Unsatisfied dependency expressed through field 'userService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userServiceImpl': Unsatisfied dependency expressed through field 'userMapper'; nested exception is org.springframework.beans.factory.NoSuchBeanDefinitionException: No qualifying bean of type 'com.haizhi.mybatises.dao.UserMapper' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {@org.springframework.beans.factory.annotation.Autowired(required=true)}
+2020-03-30 23:53:47.384 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2020-03-30 23:53:47.434 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-03-30 23:53:47.507 [main] ERROR o.s.b.diagnostics.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Field userMapper in com.haizhi.mybatises.service.UserServiceImpl required a bean of type 'com.haizhi.mybatises.dao.UserMapper' that could not be found.
+
+The injection point has the following annotations:
+	- @org.springframework.beans.factory.annotation.Autowired(required=true)
+
+
+Action:
+
+Consider defining a bean of type 'com.haizhi.mybatises.dao.UserMapper' in your configuration.
+
+2020-03-30 23:55:14.326 [main] INFO  com.haizhi.mybatises.MybatisEsApplication - Starting MybatisEsApplication on SC-202002152346 with PID 6480 (D:\code\spring-boot-mybatis-demo\target\classes started by Administrator in D:\code\spring-boot-mybatis-demo)
+2020-03-30 23:55:14.330 [main] INFO  com.haizhi.mybatises.MybatisEsApplication - No active profile set, falling back to default profiles: default
+2020-03-30 23:55:14.583 [main] ERROR org.springframework.boot.SpringApplication - Application run failed
+java.lang.annotation.AnnotationFormatError: Invalid default: public abstract java.lang.Class org.mybatis.spring.annotation.MapperScan.factoryBean()
+	at java.lang.reflect.Method.getDefaultValue(Method.java:612)
+	at sun.reflect.annotation.AnnotationType.<init>(AnnotationType.java:132)
+	at sun.reflect.annotation.AnnotationType.getInstance(AnnotationType.java:85)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotation2(AnnotationParser.java:266)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotations2(AnnotationParser.java:120)
+	at sun.reflect.annotation.AnnotationParser.parseAnnotations(AnnotationParser.java:72)
+	at java.lang.Class.createAnnotationData(Class.java:3521)
+	at java.lang.Class.annotationData(Class.java:3510)
+	at java.lang.Class.getDeclaredAnnotations(Class.java:3477)
+	at org.springframework.core.annotation.AnnotationsScanner.getDeclaredAnnotations(AnnotationsScanner.java:499)
+	at org.springframework.core.annotation.AnnotationsScanner.isKnownEmpty(AnnotationsScanner.java:543)
+	at org.springframework.core.annotation.TypeMappedAnnotations.from(TypeMappedAnnotations.java:251)
+	at org.springframework.core.annotation.MergedAnnotations.from(MergedAnnotations.java:322)
+	at org.springframework.core.annotation.MergedAnnotations.from(MergedAnnotations.java:305)
+	at org.springframework.boot.BeanDefinitionLoader.isComponent(BeanDefinitionLoader.java:279)
+	at org.springframework.boot.BeanDefinitionLoader.load(BeanDefinitionLoader.java:156)
+	at org.springframework.boot.BeanDefinitionLoader.load(BeanDefinitionLoader.java:136)
+	at org.springframework.boot.BeanDefinitionLoader.load(BeanDefinitionLoader.java:128)
+	at org.springframework.boot.SpringApplication.load(SpringApplication.java:691)
+	at org.springframework.boot.SpringApplication.prepareContext(SpringApplication.java:392)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:314)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1226)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at com.haizhi.mybatises.MybatisEsApplication.main(MybatisEsApplication.java:15)
+2020-03-30 23:55:54.450 [main] INFO  com.haizhi.mybatises.MybatisEsApplication - Starting MybatisEsApplication on SC-202002152346 with PID 11708 (D:\code\spring-boot-mybatis-demo\target\classes started by Administrator in D:\code\spring-boot-mybatis-demo)
+2020-03-30 23:55:54.452 [main] INFO  com.haizhi.mybatises.MybatisEsApplication - No active profile set, falling back to default profiles: default
+2020-03-30 23:55:56.100 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9090 (http)
+2020-03-30 23:55:56.109 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9090"]
+2020-03-30 23:55:56.109 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2020-03-30 23:55:56.110 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.31]
+2020-03-30 23:55:56.186 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2020-03-30 23:55:56.186 [main] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1645 ms
+2020-03-30 23:55:56.259 [main] WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userController': Unsatisfied dependency expressed through field 'userService'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userServiceImpl': Unsatisfied dependency expressed through field 'userMapper'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'userMapper' defined in file [D:\code\spring-boot-mybatis-demo\target\classes\com\haizhi\mybatises\dao\UserMapper.class]: Unsatisfied dependency expressed through bean property 'sqlSessionFactory'; nested exception is org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'sqlSessionFactory' defined in class path resource [org/mybatis/spring/boot/autoconfigure/MybatisAutoConfiguration.class]: Unsatisfied dependency expressed through method 'sqlSessionFactory' parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'dataSource' defined in class path resource [org/springframework/boot/autoconfigure/jdbc/DataSourceConfiguration$Hikari.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.zaxxer.hikari.HikariDataSource]: Factory method 'dataSource' threw exception; nested exception is org.springframework.boot.autoconfigure.jdbc.DataSourceProperties$DataSourceBeanCreationException: Failed to determine a suitable driver class
+2020-03-30 23:55:56.262 [main] INFO  org.apache.catalina.core.StandardService - Stopping service [Tomcat]
+2020-03-30 23:55:56.304 [main] INFO  o.s.b.a.l.ConditionEvaluationReportLoggingListener - 
+
+Error starting ApplicationContext. To display the conditions report re-run your application with 'debug' enabled.
+2020-03-30 23:55:56.306 [main] ERROR o.s.b.diagnostics.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to configure a DataSource: 'url' attribute is not specified and no embedded datasource could be configured.
+
+Reason: Failed to determine a suitable driver class
+
+
+Action:
+
+Consider the following:
+	If you want an embedded database (H2, HSQL or Derby), please put it on the classpath.
+	If you have database settings to be loaded from a particular profile you may need to activate it (no profiles are currently active).
+
+2020-03-30 23:57:31.061 [main] INFO  com.haizhi.mybatises.MybatisEsApplication - Starting MybatisEsApplication on SC-202002152346 with PID 1720 (D:\code\spring-boot-mybatis-demo\target\classes started by Administrator in D:\code\spring-boot-mybatis-demo)
+2020-03-30 23:57:31.065 [main] INFO  com.haizhi.mybatises.MybatisEsApplication - No active profile set, falling back to default profiles: default
+2020-03-30 23:57:32.616 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat initialized with port(s): 9090 (http)
+2020-03-30 23:57:32.625 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Initializing ProtocolHandler ["http-nio-9090"]
+2020-03-30 23:57:32.625 [main] INFO  org.apache.catalina.core.StandardService - Starting service [Tomcat]
+2020-03-30 23:57:32.626 [main] INFO  org.apache.catalina.core.StandardEngine - Starting Servlet engine: [Apache Tomcat/9.0.31]
+2020-03-30 23:57:32.709 [main] INFO  o.a.c.core.ContainerBase.[Tomcat].[localhost].[/] - Initializing Spring embedded WebApplicationContext
+2020-03-30 23:57:32.709 [main] INFO  org.springframework.web.context.ContextLoader - Root WebApplicationContext: initialization completed in 1577 ms
+2020-03-30 23:57:33.320 [main] INFO  s.d.s.w.PropertySourcedRequestMappingHandlerMapping - Mapped URL path [/v2/api-docs] onto method [springfox.documentation.swagger2.web.Swagger2Controller#getDocumentation(String, HttpServletRequest)]
+2020-03-30 23:57:33.389 [main] INFO  o.s.scheduling.concurrent.ThreadPoolTaskExecutor - Initializing ExecutorService 'applicationTaskExecutor'
+2020-03-30 23:57:33.515 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Context refreshed
+2020-03-30 23:57:33.531 [main] INFO  s.d.s.web.plugins.DocumentationPluginsBootstrapper - Found 1 custom documentation plugin(s)
+2020-03-30 23:57:33.571 [main] INFO  s.d.spring.web.scanners.ApiListingReferenceScanner - Scanning for api listing references
+2020-03-30 23:57:33.673 [main] INFO  org.apache.coyote.http11.Http11NioProtocol - Starting ProtocolHandler ["http-nio-9090"]
+2020-03-30 23:57:33.698 [main] INFO  o.s.boot.web.embedded.tomcat.TomcatWebServer - Tomcat started on port(s): 9090 (http) with context path ''
+2020-03-30 23:57:33.701 [main] INFO  com.haizhi.mybatises.MybatisEsApplication - Started MybatisEsApplication in 2.927 seconds (JVM running for 3.441)

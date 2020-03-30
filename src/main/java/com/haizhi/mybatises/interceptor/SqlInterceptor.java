@@ -14,17 +14,21 @@ import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.type.TypeHandlerRegistry;
-
+import org.elasticsearch.action.ActionResponse;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.transport.TransportClient;
+import org.elasticsearch.search.SearchHit;
+import org.nlpcn.es4sql.SearchDao;
+import org.nlpcn.es4sql.query.SqlElasticSearchRequestBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 拼接sql，代入对应参数
@@ -40,6 +44,9 @@ import java.util.Properties;
 )
 public class SqlInterceptor implements Interceptor {
     private static ThreadLocal<SimpleDateFormat> dateTimeFormatter = ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+
+    @Autowired
+    private TransportClient transportClient;
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
@@ -57,7 +64,7 @@ public class SqlInterceptor implements Interceptor {
             Configuration configuration = mappedStatement.getConfiguration();
 
             if (invocation.getArgs().length > 2) {
-                RowBounds rowBounds = (RowBounds)invocation.getArgs()[2];
+                RowBounds rowBounds = (RowBounds) invocation.getArgs()[2];
             }
 
             try {
@@ -70,6 +77,9 @@ public class SqlInterceptor implements Interceptor {
             } finally {
             }
             String sql = getSql(configuration, boundSql);
+
+            String test = test(sql);
+            System.out.println(test);
 
             return result;
         } catch (Exception e) {
@@ -165,6 +175,27 @@ public class SqlInterceptor implements Interceptor {
             sql = sql.replaceFirst("\\?", value);
         }
         return sql;
+    }
+
+    private String test(String sql) {
+        //执行sql查询
+        try {
+            //创建sql查询对象
+            SearchDao searchDao = new SearchDao(transportClient);
+            //"select * from teacher where teacherId = 2"
+            SqlElasticSearchRequestBuilder select = (SqlElasticSearchRequestBuilder) searchDao.explain(sql).explain();
+            ActionResponse response = select.get();
+            if (response instanceof SearchResponse) {
+                SearchResponse searchResponse = (SearchResponse) response;
+                SearchHit[] hits = searchResponse.getHits().getHits();
+                List<String> list = Arrays.asList(hits).stream().map(hit -> hit.getSourceAsString()).collect(Collectors.toList());
+                return list.toString();
+            }
+            return response.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
     private String beautifySql(String sql) {

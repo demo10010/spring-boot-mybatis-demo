@@ -10,7 +10,7 @@
     </resultMap>
 
     <select id="Sel" resultType="com.haizhi.mybatises.entity.User">
-        select * from test_user where id = #{id}
+        select * from my_test  where id = #{id}
     </select>
 
 </mapper>
