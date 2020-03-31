@@ -9,8 +9,18 @@
         <result column="realName" jdbcType="VARCHAR" property="realName" />
     </resultMap>
 
-    <select id="Sel" resultType="com.haizhi.mybatises.entity.User">
+    <select id="findOne" resultType="com.haizhi.mybatises.entity.User">
         select * from my_test  where id = #{id}
     </select>
+
+    <select id="findList" resultType="com.haizhi.mybatises.entity.User">
+        select * from my_test  where id = #{id}
+    </select>
+
+    <select id="matchQuery" resultType="com.haizhi.mybatises.entity.User">
+         SELECT * FROM my_test where userName like CONCAT(%,#{name},%)
+    </select>
+
+
 
 </mapper>

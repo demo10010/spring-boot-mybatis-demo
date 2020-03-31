@@ -1,18 +1,23 @@
 package com.haizhi.mybatises.interceptor;
 
+import com.alibaba.fastjson.JSON;
 import com.google.common.collect.Lists;
+import com.google.gson.Gson;
 import com.haizhi.mybatises.entity.User;
+import com.haizhi.mybatises.util.EsSqlUtil;
 import org.apache.ibatis.cache.CacheKey;
 import org.apache.ibatis.executor.Executor;
-import org.apache.ibatis.mapping.BoundSql;
-import org.apache.ibatis.mapping.MappedStatement;
-import org.apache.ibatis.mapping.ParameterMapping;
-import org.apache.ibatis.mapping.ParameterMode;
+import org.apache.ibatis.executor.parameter.ParameterHandler;
+import org.apache.ibatis.executor.result.DefaultMapResultHandler;
+import org.apache.ibatis.executor.result.DefaultResultHandler;
+import org.apache.ibatis.executor.resultset.DefaultResultSetHandler;
+import org.apache.ibatis.mapping.*;
 import org.apache.ibatis.plugin.*;
 import org.apache.ibatis.reflection.MetaObject;
 import org.apache.ibatis.session.Configuration;
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
+import org.apache.ibatis.type.TypeHandler;
 import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.elasticsearch.action.ActionResponse;
 import org.elasticsearch.action.search.SearchResponse;
@@ -26,6 +31,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import java.lang.reflect.AnnotatedType;
+import java.lang.reflect.Method;
+import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -54,35 +62,41 @@ public class SqlInterceptor implements Interceptor {
         //捕获掉异常，不要影响业务
         try {
             MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
+
+            List<ResultMap> resultMaps = mappedStatement.getResultMaps();
+            Class<?> resultType = resultMaps.get(0).getType();//TODO 待验证
+
             Object parameter = null;
             int argsLength = invocation.getArgs().length;
-            if (invocation.getArgs().length > 1) {
+            if (argsLength > 1) {
                 parameter = invocation.getArgs()[1];
             }
-            System.out.println(parameter.getClass().getName());
             BoundSql boundSql = mappedStatement.getBoundSql(parameter);
             Configuration configuration = mappedStatement.getConfiguration();
 
-            if (invocation.getArgs().length > 2) {
-                RowBounds rowBounds = (RowBounds) invocation.getArgs()[2];
+            if (argsLength > 2) {
+                RowBounds rowBounds = (RowBounds) invocation.getArgs()[2];//TODO 分页参数
+                int limit = rowBounds.getLimit();
+                int offset = rowBounds.getOffset();
             }
+////
+//            if (invocation.getArgs().length > 3) {
+//                Object resultHandler = invocation.getArgs()[3];//分页参数
+//                if (resultHandler instanceof DefaultMapResultHandler) {
+//                    DefaultMapResultHandler mapHandler = (DefaultMapResultHandler) resultHandler;
+//                    Map mappedResults = mapHandler.getMappedResults();
+//                } else if (resultHandler instanceof DefaultResultHandler) {
+//                    DefaultResultHandler defaultResultHandler = (DefaultResultHandler) resultHandler;
+//                    List<Object> resultList = defaultResultHandler.getResultList();
+//                }
+//            }
 
-            try {
-//                result = invocation.proceed();
-                User user = new User();
-                user.setId(1);
-                user.setUserName("my---name");
-                result = Lists.newArrayList(user);
-
-            } finally {
-            }
             String sql = getSql(configuration, boundSql);
 
-            String test = test(sql);
-            System.out.println(test);
-
+            result = EsSqlUtil.queryBySql(transportClient,sql, resultType);
             return result;
         } catch (Exception e) {
+            e.printStackTrace();
             return result;
         }
     }
@@ -177,27 +191,6 @@ public class SqlInterceptor implements Interceptor {
         return sql;
     }
 
-    private String test(String sql) {
-        //执行sql查询
-        try {
-            //创建sql查询对象
-            SearchDao searchDao = new SearchDao(transportClient);
-            //"select * from teacher where teacherId = 2"
-            SqlElasticSearchRequestBuilder select = (SqlElasticSearchRequestBuilder) searchDao.explain(sql).explain();
-            ActionResponse response = select.get();
-            if (response instanceof SearchResponse) {
-                SearchResponse searchResponse = (SearchResponse) response;
-                SearchHit[] hits = searchResponse.getHits().getHits();
-                List<String> list = Arrays.asList(hits).stream().map(hit -> hit.getSourceAsString()).collect(Collectors.toList());
-                return list.toString();
-            }
-            return response.toString();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "";
-    }
-
     private String beautifySql(String sql) {
         return sql.replaceAll("[\\s\n ]+", " ");
     }
@@ -225,7 +218,6 @@ public class SqlInterceptor implements Interceptor {
         Logger log = LoggerFactory.getLogger(sqlId);
         log.info(sqlLog);
         log.info(result.toString());
-        System.err.println("输出的sql为 ======》》》" + sqlLog + "    " + result.toString());
     }
 
 }
